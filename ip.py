@@ -4,7 +4,7 @@ import collections
 import random
 import requests
 import threading
-import queue
+from queue import Queue
 
 URLS = [
     'http://api.ipify.org',
@@ -17,25 +17,27 @@ URLS = [
 
 NURLS = 5  # Number of websites to query.
 
-q = queue.Queue()
+def _get_ip(url, queue, timeout=0.25):
+    """Get external IP from 'url' and put it into 'queue'."""
 
-def get_ip(url, timeout=0.25):
-   r = requests.get(url, timeout=timeout)
-   try:
-       r.raise_for_status()
-       ip = r.text.strip()
-       print(url, "->", ip)
-       q.put(ip)
-   except (requests.exceptions.HTTPError,
-           requests.exceptions.Timeout):
-       return None
+    r = requests.get(url, timeout=timeout)
+    try:
+        r.raise_for_status()
+        ip = r.text.strip()
+        print(url, "->", ip)
+        queue.put(ip)
+    except (requests.exceptions.HTTPError,
+            requests.exceptions.Timeout):
+        return None
 
 
-if __name__ == "__main__":
+def get():
+    """"Returns the current external IP."""
 
-    threads= []
+    threads = []
+    queue = Queue()
     for url in random.sample(URLS, NURLS):
-        t = threading.Thread(target=get_ip, args=(url,))
+        t = threading.Thread(target=_get_ip, args=(url, queue))
         threads.append(t)
         t.start()
 
@@ -43,6 +45,10 @@ if __name__ == "__main__":
         t.join()
 
     ips = []
-    while not q.empty():
-        ips.append(q.get())
-    print("IP: ", collections.Counter(ips).most_common(1)[0])
+    while not queue.empty():
+        ips.append(queue.get())
+    return collections.Counter(ips).most_common(1)[0][0]
+
+
+if __name__ == "__main__":
+    print("IP: ", get())
