@@ -1,5 +1,12 @@
 #! /usr/bin/env python3
 
+"""Returns the current external IP. Usage:
+
+>>> import ip
+>>> ip.get()
+'212.51.139.108'
+"""
+
 import collections
 import logging
 import random
