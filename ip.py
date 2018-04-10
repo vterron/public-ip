@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 import collections
+import logging
 import random
 import requests
 import threading
@@ -24,7 +25,7 @@ def _get_ip(url, queue, timeout):
         r = requests.get(url, timeout=timeout)
         r.raise_for_status()
         ip = r.text.strip()
-        print(url, "->", ip)
+        logging.info("Asked %s for our IP -> %s", url, ip)
         queue.put(ip)
     except (requests.exceptions.HTTPError,
             requests.exceptions.Timeout):
