@@ -1,0 +1,7 @@
+Implements a single public function that returns the current external IP.
+
+Sample usage:
+
+>>> import ip
+>>> ip.get()
+'212.51.139.108'
