@@ -32,7 +32,15 @@ def _get_ip(url, queue, timeout):
 
 
 def get(nurls=len(URLS), timeout=0.25):
-    """"Returns the current external IP."""
+    """"Returns the current external IP.
+
+    Launches 'nurls' processes in parallel, each one of them fetching the
+    external IP from one of the websites in the URLS module-level variable.
+    Each independent request timeouts after 'timeout' seconds. After all of
+    them have completed, returns the most common IP. In this manner we will
+    return the correct IP as long as the majority of URLs we talk to report
+    our actual IP.
+    """
 
     threads = []
     queue = Queue()
