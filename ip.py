@@ -17,7 +17,7 @@ URLS = [
 
 NURLS = 5  # Number of websites to query.
 
-def _get_ip(url, queue, timeout=0.25):
+def _get_ip(url, queue, timeout):
     """Get external IP from 'url' and put it into 'queue'."""
 
     try:
@@ -31,13 +31,13 @@ def _get_ip(url, queue, timeout=0.25):
         return None
 
 
-def get(nurls=len(URLS)):
+def get(nurls=len(URLS), timeout=0.25):
     """"Returns the current external IP."""
 
     threads = []
     queue = Queue()
     for url in random.sample(URLS, nurls):
-        t = threading.Thread(target=_get_ip, args=(url, queue))
+        t = threading.Thread(target=_get_ip, args=(url, queue, timeout))
         threads.append(t)
         t.start()
 
