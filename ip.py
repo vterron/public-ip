@@ -46,12 +46,3 @@ if __name__ == "__main__":
     while not q.empty():
         ips.append(q.get())
     print("IP: ", collections.Counter(ips).most_common(1)[0])
-
-
-    # Serial version
-    #ips = []
-    #for url in URLS:
-    #    ips.append(get_ip(url))
-    #    print(url, "->", ips[-1])
-    #print()
-    #print("IP: ", collections.Counter(ips).most_common(1)[0])
