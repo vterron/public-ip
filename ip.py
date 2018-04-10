@@ -31,12 +31,12 @@ def _get_ip(url, queue, timeout=0.25):
         return None
 
 
-def get():
+def get(nurls=len(URLS)):
     """"Returns the current external IP."""
 
     threads = []
     queue = Queue()
-    for url in random.sample(URLS, NURLS):
+    for url in random.sample(URLS, nurls):
         t = threading.Thread(target=_get_ip, args=(url, queue))
         threads.append(t)
         t.start()
