@@ -20,8 +20,8 @@ NURLS = 5  # Number of websites to query.
 def _get_ip(url, queue, timeout=0.25):
     """Get external IP from 'url' and put it into 'queue'."""
 
-    r = requests.get(url, timeout=timeout)
     try:
+        r = requests.get(url, timeout=timeout)
         r.raise_for_status()
         ip = r.text.strip()
         print(url, "->", ip)
