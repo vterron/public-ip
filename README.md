@@ -32,3 +32,5 @@ The function queries in parallel six different websites...
 1. https://ipinfo.io/ip
 
 ... and returns the most common IP among the responses. This approach seeks to ensure that (a) we don't depend on a single external service and (b) we can determine the IP correctly as long as a _majority_ of these sites return the right value.
+
+[![Test workflow](https://github.com/vterron/public-ip/actions/workflows/test.yml/badge.svg)](https://github.com/vterron/public-ip/actions/workflows/test.yml)
