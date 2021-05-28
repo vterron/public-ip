@@ -5,6 +5,7 @@ import logging
 import random
 import requests
 import threading
+import typing
 from queue import Queue
 
 URLS = [
@@ -18,7 +19,7 @@ URLS = [
 
 NURLS = 5  # Number of websites to query.
 
-def _get_ip(url, queue, timeout):
+def _get_ip(url: str, queue: Queue, timeout: float) -> None:
     """Get external IP from 'url' and put it into 'queue'."""
 
     try:
@@ -29,10 +30,10 @@ def _get_ip(url, queue, timeout):
         queue.put(ip)
     except (requests.exceptions.HTTPError,
             requests.exceptions.Timeout):
-        return None
+        pass
 
 
-def get(nurls=len(URLS), timeout=0.25):
+def get(nurls:int = len(URLS), timeout:float = 0.25) -> str:
     """"Returns the current external IP.
 
     Launches 'nurls' processes in parallel, each one of them fetching the
@@ -44,7 +45,7 @@ def get(nurls=len(URLS), timeout=0.25):
     """
 
     threads = []
-    queue = Queue()
+    queue : Queue = Queue()
     for url in random.sample(URLS, nurls):
         t = threading.Thread(target=_get_ip, args=(url, queue, timeout))
         threads.append(t)
