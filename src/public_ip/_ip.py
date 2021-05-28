@@ -8,12 +8,12 @@ import threading
 from queue import Queue
 
 URLS = [
-    'http://api.ipify.org',
-    'http://checkip.amazonaws.com',
-    'http://icanhazip.com',
-    'http://ifconfig.co/ip',
-    'http://ipecho.net/plain',
-    'http://ipinfo.io/ip',
+    'https://api.ipify.org',
+    'https://checkip.amazonaws.com',
+    'https://icanhazip.com',
+    'https://ifconfig.co/ip',
+    'https://ipecho.net/plain',
+    'https://ipinfo.io/ip',
 ]
 
 NURLS = 5  # Number of websites to query.
