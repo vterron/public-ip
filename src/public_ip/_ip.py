@@ -57,4 +57,19 @@ def get(nurls: int = len(URLS), timeout: float = 0.25) -> str:
     ips = []
     while not queue.empty():
         ips.append(queue.get())
-    return collections.Counter(ips).most_common(1)[0][0]
+
+    # If there's a single IP among the responses, we're done.
+    counter = collections.Counter(ips)
+    if len(counter) == 1:
+        return counter.most_common(1)[0][0]
+
+    # Make sure there isn't a tie among the two most common IPs.
+    top_two = counter.most_common(2)
+    first_ip, first_votes = top_two[0]
+    second_ip, second_votes = top_two[1]
+    if first_votes == second_votes:
+        raise ValueError(
+            f"tie between {first_ip} and {second_ip} among the "
+            "responses ({first_votes} occurrences each)"
+        )
+    return first_ip

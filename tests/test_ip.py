@@ -56,5 +56,39 @@ class GetPublicIPTest(parameterized.TestCase):
         self.assertEqual(got, want)
 
 
+class GetPublicIPTestError(parameterized.TestCase):
+    @parameterized.named_parameters(
+        {
+            "testcase_name": "No IP has a majority of votes",
+            "answers": {
+                "https://api.ipify.org": "1.1.1.1",
+                "https://checkip.amazonaws.com": "2.2.2.2",
+                "https://icanhazip.com": "3.3.3.3",
+                "https://ifconfig.co/ip": "4.4.4.4",
+                "https://ipecho.net/plain": "5.5.5.5",
+                "https://ipinfo.io/ip": "6.6.6.6",
+            },
+        },
+        {
+            "testcase_name": "Tie in the returned IPs",
+            "answers": {
+                "https://api.ipify.org": "1.1.1.1",
+                "https://checkip.amazonaws.com": "1.1.1.1",
+                "https://icanhazip.com": "1.1.1.1",
+                "https://ifconfig.co/ip": "2.2.2.2",
+                "https://ipecho.net/plain": "2.2.2.2",
+                "https://ipinfo.io/ip": "2.2.2.2",
+            },
+        },
+    )
+    @requests_mock.Mocker()
+    def test_get(self, mock, answers):
+
+        for URL, reply in answers.items():
+            mock.get(URL, text=reply)
+        with self.assertRaises(ValueError):
+            got = ip.get()
+
+
 if __name__ == "__main__":
     absltest.main()
