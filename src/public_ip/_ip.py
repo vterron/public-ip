@@ -1,12 +1,5 @@
 #! /usr/bin/env python3
 
-"""Returns the current external IP. Usage:
-
->>> import ip
->>> ip.get()
-'212.51.139.108'
-"""
-
 import collections
 import logging
 import random
@@ -17,7 +10,7 @@ from queue import Queue
 URLS = [
     'http://api.ipify.org',
     'http://checkip.amazonaws.com',
-    'http://icanhazip.com/',
+    'http://icanhazip.com',
     'http://ifconfig.co/ip',
     'http://ipecho.net/plain',
     'http://ipinfo.io/ip',
@@ -64,7 +57,3 @@ def get(nurls=len(URLS), timeout=0.25):
     while not queue.empty():
         ips.append(queue.get())
     return collections.Counter(ips).most_common(1)[0][0]
-
-
-if __name__ == "__main__":
-    print("IP: ", get())
