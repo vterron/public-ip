@@ -13,4 +13,4 @@ clean:
 	rm dist/ build/ -rfv
 
 push:
-	python3 -m twine upload --repository public-ip --skip-existing dist/*
+	python3 -m twine upload --repository public-ip --repository-url=https://upload.pypi.org/legacy/ --skip-existing dist/*
