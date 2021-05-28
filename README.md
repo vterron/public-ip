@@ -34,4 +34,5 @@ The function queries in parallel six different websites...
 ... and returns the most common IP among the responses. This approach seeks to ensure that (a) we don't depend on a single external service and (b) we can determine the IP correctly as long as a _majority_ of these sites return the right value.
 
 [![Test workflow](https://github.com/vterron/public-ip/actions/workflows/test.yml/badge.svg)](https://github.com/vterron/public-ip/actions/workflows/test.yml)
+[![PyPI badge](https://img.shields.io/pypi/v/public-ip?color=blue)](https://pypi.org/project/public-ip/)
 [![Black badge](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
