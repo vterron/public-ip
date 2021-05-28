@@ -9,15 +9,16 @@ import typing
 from queue import Queue
 
 URLS = [
-    'https://api.ipify.org',
-    'https://checkip.amazonaws.com',
-    'https://icanhazip.com',
-    'https://ifconfig.co/ip',
-    'https://ipecho.net/plain',
-    'https://ipinfo.io/ip',
+    "https://api.ipify.org",
+    "https://checkip.amazonaws.com",
+    "https://icanhazip.com",
+    "https://ifconfig.co/ip",
+    "https://ipecho.net/plain",
+    "https://ipinfo.io/ip",
 ]
 
 NURLS = 5  # Number of websites to query.
+
 
 def _get_ip(url: str, queue: Queue, timeout: float) -> None:
     """Get external IP from 'url' and put it into 'queue'."""
@@ -28,13 +29,12 @@ def _get_ip(url: str, queue: Queue, timeout: float) -> None:
         ip = r.text.strip()
         logging.info("Asked %s for our IP -> %s", url, ip)
         queue.put(ip)
-    except (requests.exceptions.HTTPError,
-            requests.exceptions.Timeout):
+    except (requests.exceptions.HTTPError, requests.exceptions.Timeout):
         pass
 
 
-def get(nurls:int = len(URLS), timeout:float = 0.25) -> str:
-    """"Returns the current external IP.
+def get(nurls: int = len(URLS), timeout: float = 0.25) -> str:
+    """ "Returns the current external IP.
 
     Launches 'nurls' processes in parallel, each one of them fetching the
     external IP from one of the websites in the URLS module-level variable.
@@ -45,7 +45,7 @@ def get(nurls:int = len(URLS), timeout:float = 0.25) -> str:
     """
 
     threads = []
-    queue : Queue = Queue()
+    queue: Queue = Queue()
     for url in random.sample(URLS, nurls):
         t = threading.Thread(target=_get_ip, args=(url, queue, timeout))
         threads.append(t)
