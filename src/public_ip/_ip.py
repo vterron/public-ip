@@ -31,7 +31,7 @@ def _get_ip(url: str, queue: Queue, timeout: float) -> None:
         pass
 
 
-def get(nurls: int = len(URLS), timeout: float = 0.25) -> str:
+def get(nurls: int = len(URLS), timeout: float = 1) -> str:
     """ "Returns the current external IP.
 
     Launches 'nurls' processes in parallel, each one of them fetching the
