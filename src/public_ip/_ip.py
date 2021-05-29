@@ -56,6 +56,9 @@ def get(nurls: int = len(URLS), timeout: float = 1) -> str:
     while not queue.empty():
         ips.append(queue.get())
 
+    if not ips:
+        raise IOError("all server queries failed")
+
     # If there's a single IP among the responses, we're done.
     counter = collections.Counter(ips)
     if len(counter) == 1:

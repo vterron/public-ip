@@ -85,6 +85,8 @@ class GetPublicIPTestError(parameterized.TestCase):
                 "https://ipecho.net/plain": "5.5.5.5",
                 "https://ipinfo.io/ip": "6.6.6.6",
             },
+            "want": ValueError,
+            "regex": "tie",
         },
         {
             "testcase_name": "Tie in the returned IPs",
@@ -96,6 +98,8 @@ class GetPublicIPTestError(parameterized.TestCase):
                 "https://ipecho.net/plain": "2.2.2.2",
                 "https://ipinfo.io/ip": "2.2.2.2",
             },
+            "want": ValueError,
+            "regex": "tie",
         },
         {
             "testcase_name": "Tie in the returned IPs after some servers time out",
@@ -107,10 +111,25 @@ class GetPublicIPTestError(parameterized.TestCase):
                 "https://ipecho.net/plain": None,
                 "https://ipinfo.io/ip": None,
             },
+            "want": ValueError,
+            "regex": "tie",
+        },
+        {
+            "testcase_name": "All servers time out",
+            "answers": {
+                "https://api.ipify.org": None,
+                "https://checkip.amazonaws.com": None,
+                "https://icanhazip.com": None,
+                "https://ifconfig.co/ip": None,
+                "https://ipecho.net/plain": None,
+                "https://ipinfo.io/ip": None,
+            },
+            "want": IOError,
+            "regex": "all .* failed",
         },
     )
     @requests_mock.Mocker()
-    def test_get(self, mock, answers):
+    def test_get(self, mock, answers, want, regex):
 
         for URL, reply in answers.items():
             if reply is None:
@@ -118,7 +137,7 @@ class GetPublicIPTestError(parameterized.TestCase):
             else:
                 mock.get(URL, text=reply)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(want, regex):
             got = ip.get()
 
 
