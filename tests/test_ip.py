@@ -2,6 +2,7 @@
 
 import public_ip as ip
 
+import requests
 import requests_mock
 
 from absl.testing import absltest
@@ -46,12 +47,28 @@ class GetPublicIPTest(parameterized.TestCase):
             },
             "want": "1.1.1.1",
         },
+        {
+            "testcase_name": "One of the servers times out",
+            "answers": {
+                "https://api.ipify.org": "1.1.1.1",
+                "https://checkip.amazonaws.com": "1.1.1.1",
+                "https://icanhazip.com": "1.1.1.1",
+                "https://ifconfig.co/ip": "1.1.1.1",
+                "https://ipecho.net/plain": "2.2.2.2",
+                "https://ipinfo.io/ip": None,
+            },
+            "want": "1.1.1.1",
+        },
     )
     @requests_mock.Mocker()
     def test_get(self, mock, answers, want):
 
         for URL, reply in answers.items():
-            mock.get(URL, text=reply)
+            if reply is None:
+                mock.get(URL, exc=requests.exceptions.ConnectTimeout)
+            else:
+                mock.get(URL, text=reply)
+
         got = ip.get()
         self.assertEqual(got, want)
 
@@ -80,12 +97,27 @@ class GetPublicIPTestError(parameterized.TestCase):
                 "https://ipinfo.io/ip": "2.2.2.2",
             },
         },
+        {
+            "testcase_name": "Tie in the returned IPs after some servers time out",
+            "answers": {
+                "https://api.ipify.org": "1.1.1.1",
+                "https://checkip.amazonaws.com": "2.2.2.2",
+                "https://icanhazip.com": None,
+                "https://ifconfig.co/ip": None,
+                "https://ipecho.net/plain": None,
+                "https://ipinfo.io/ip": None,
+            },
+        },
     )
     @requests_mock.Mocker()
     def test_get(self, mock, answers):
 
         for URL, reply in answers.items():
-            mock.get(URL, text=reply)
+            if reply is None:
+                mock.get(URL, exc=requests.exceptions.ConnectTimeout)
+            else:
+                mock.get(URL, text=reply)
+
         with self.assertRaises(ValueError):
             got = ip.get()
 
