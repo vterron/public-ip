@@ -27,7 +27,7 @@ The function queries in parallel six different websites...
 1. https://api.ipify.org
 1. https://checkip.amazonaws.com
 1. https://icanhazip.com
-1. https://ifconfig.co/ip'
+1. https://ifconfig.co/ip
 1. https://ipecho.net/plain
 1. https://ipinfo.io/ip
 
