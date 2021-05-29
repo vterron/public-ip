@@ -17,8 +17,6 @@ URLS = [
     "https://ipinfo.io/ip",
 ]
 
-NURLS = 5  # Number of websites to query.
-
 
 def _get_ip(url: str, queue: Queue, timeout: float) -> None:
     """Get external IP from 'url' and put it into 'queue'."""
