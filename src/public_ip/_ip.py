@@ -32,7 +32,7 @@ def _get_ip(url: str, queue: Queue, timeout: float) -> None:
 
 
 def get(nurls: int = len(URLS), timeout: float = 1) -> str:
-    """ "Returns the current external IP.
+    """ Returns the current external IP.
 
     Launches 'nurls' processes in parallel, each one of them fetching the
     external IP from one of the websites in the URLS module-level variable.
@@ -70,7 +70,7 @@ def get(nurls: int = len(URLS), timeout: float = 1) -> str:
     second_ip, second_votes = top_two[1]
     if first_votes == second_votes:
         raise ValueError(
-            f"tie between {first_ip} and {second_ip} among the "
-            "responses ({first_votes} occurrences each)"
+            f"tie between {first_ip} and {second_ip} among the ",
+            f"responses ({first_votes} occurrences each)"
         )
     return first_ip
