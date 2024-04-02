@@ -71,6 +71,6 @@ def get(nurls: int = len(URLS), timeout: float = 1) -> str:
     if first_votes == second_votes:
         raise ValueError(
             f"tie between {first_ip} and {second_ip} among the "
-            "responses ({first_votes} occurrences each)"
+            f"responses ({first_votes} occurrences each)"
         )
     return first_ip
