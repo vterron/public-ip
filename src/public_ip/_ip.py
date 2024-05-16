@@ -8,6 +8,8 @@ import threading
 import typing
 from queue import Queue
 
+LOGGER = logging.getLogger(__name__)
+
 URLS = [
     "https://api.ipify.org",
     "https://checkip.amazonaws.com",
@@ -25,7 +27,7 @@ def _get_ip(url: str, queue: Queue, timeout: float) -> None:
         r = requests.get(url, timeout=timeout)
         r.raise_for_status()
         ip = r.text.strip()
-        logging.info("Asked %s for our IP -> %s", url, ip)
+        LOGGER.debug("Asked %s for our IP -> %s", url, ip)
         queue.put(ip)
     except (requests.exceptions.HTTPError, requests.exceptions.Timeout):
         pass
